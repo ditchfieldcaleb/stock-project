@@ -33,7 +33,7 @@ The main test file is `FunctionalSpec.scala`
 
 There are currently 10 tests, 2 which came default to the websocket starter example.
 
-There are 7 tests left to impelement as of this commit.
+There are 7 tests left to implement as of this commit.
 
 ## Some Details
 
