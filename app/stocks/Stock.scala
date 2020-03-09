@@ -94,7 +94,7 @@ class RealStockQuoteGenerator(symbol: StockSymbol) extends StockQuoteGenerator {
   }
 
   def seed: StockQuote = {
-    StockQuote(symbol, StockPrice(getRealStockPrice(symbol.toString())))
+    StockQuote(symbol, StockPrice(0.00))
   }
 
   def newQuote(lastQuote: StockQuote): StockQuote = {

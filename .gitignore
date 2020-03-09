@@ -3,4 +3,5 @@ target/
 target/**
 RUNNING_PID
 
-.swp
+*.swp
+*.swo

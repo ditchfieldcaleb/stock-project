@@ -136,6 +136,7 @@ class UserActor @Inject()(id: String, stocksActor: ActorRef[GetStocks])(implicit
 
     // Start it up!
     val killSwitch = graph.run()
+    println("grpah is running")
 
     // Pull out the kill switch so we can stop it when we want to unwatch a stock.
     stocksMap += (stock.symbol -> killSwitch)
