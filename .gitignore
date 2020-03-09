@@ -2,3 +2,5 @@ logs/
 target/
 target/**
 RUNNING_PID
+
+.swp

@@ -5,12 +5,22 @@ import akka.stream.ThrottleMode
 import akka.stream.scaladsl.Source
 
 import scala.concurrent.duration._
+import scalaj.http.{Http, HttpResponse}
+
+import ujson._
 
 /**
  * A stock is a source of stock quotes and a symbol.
  */
 class Stock(val symbol: StockSymbol) {
-  private val stockQuoteGenerator: StockQuoteGenerator = new FakeStockQuoteGenerator(symbol)
+  private val stockQuoteGenerator: StockQuoteGenerator = new RealStockQuoteGenerator(symbol)
+
+  private val repeatSource: Source[StockQuote, NotUsed] = {
+    Source.unfold(stockQuoteGenerator.seed) { (last: StockQuote) =>
+      val next = stockQuoteGenerator.newQuickQuote()
+      Some(next, next)
+    }
+  }
 
   private val source: Source[StockQuote, NotUsed] = {
     Source.unfold(stockQuoteGenerator.seed) { (last: StockQuote) =>
@@ -26,12 +36,19 @@ class Stock(val symbol: StockSymbol) {
     source.grouped(n).map(sq => new StockHistory(symbol, sq.map(_.price))).take(1)
   }
 
+  /*
+   * Returns fake numbers - all 0's - so that we have a source of history for the graph at the start.
+   */
+  def quickhistory(n: Int): Source[StockHistory, NotUsed] = {
+    repeatSource.grouped(n).map(sq => new StockHistory(symbol, sq.map(_.price))).take(1)
+  }
+
   /**
-   * Provides a source that returns a stock quote every 75 milliseconds.
+   * Provides a source that returns a stock quote every 1000 milliseconds.
    */
   def update: Source[StockUpdate, NotUsed] = {
     source
-      .throttle(elements = 1, per = 75.millis, maximumBurst = 1, ThrottleMode.shaping)
+      .throttle(elements = 1, per = 1000.millis, maximumBurst = 1, ThrottleMode.shaping)
       .map(sq => new StockUpdate(sq.symbol, sq.price))
   }
 
@@ -40,9 +57,12 @@ class Stock(val symbol: StockSymbol) {
 
 trait StockQuoteGenerator {
   def seed: StockQuote
+  def newQuote(): StockQuote
   def newQuote(lastQuote: StockQuote): StockQuote
+  def newQuickQuote(): StockQuote
 }
 
+/*
 class FakeStockQuoteGenerator(symbol: StockSymbol) extends StockQuoteGenerator {
   private def random: Double = scala.util.Random.nextDouble
 
@@ -52,6 +72,41 @@ class FakeStockQuoteGenerator(symbol: StockSymbol) extends StockQuoteGenerator {
 
   def newQuote(lastQuote: StockQuote): StockQuote = {
     StockQuote(symbol, StockPrice(lastQuote.price.raw * (0.95 + (0.1 * random))))
+  }
+}
+*/
+
+// This will be our real stock quote generator!
+// We're going to be using the API from AlphaVantage.co
+class RealStockQuoteGenerator(symbol: StockSymbol) extends StockQuoteGenerator {
+  def getRealStockPrice(symbolString:String): Double = {
+    val api_key = "pk_4c75e63e0fef4a78ac364e5d9173fecb"
+    val base_url = "https://cloud.iexapis.com/stable/stock/"
+    val call_url = base_url + symbolString + "/quote?token=" + api_key
+
+    println(call_url)
+    val json = ujson.read(Http(call_url).asString.body)
+    println(json)
+    val result = json("latestPrice").toString().toDouble
+    println(result)
+
+    return result
+  }
+
+  def seed: StockQuote = {
+    StockQuote(symbol, StockPrice(getRealStockPrice(symbol.toString())))
+  }
+
+  def newQuote(lastQuote: StockQuote): StockQuote = {
+    StockQuote(symbol, StockPrice(getRealStockPrice(symbol.toString())))
+  }
+
+  def newQuote(): StockQuote = {
+    StockQuote(symbol, StockPrice(getRealStockPrice(symbol.toString())))
+  }
+
+  def newQuickQuote(): StockQuote = {
+    StockQuote(symbol, StockPrice(0.00))
   }
 }
 

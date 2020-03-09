@@ -114,7 +114,7 @@ class UserActor @Inject()(id: String, stocksActor: ActorRef[GetStocks])(implicit
   private def addStock(stock: Stock): Unit = {
     // We convert everything to JsValue so we get a single stream for the websocket.
     // Make sure the history gets written out before the updates for this stock...
-    val historySource = stock.history(50).map(sh => Json.toJson(sh))
+    val historySource = stock.quickhistory(50).map(sh => Json.toJson(sh))
     val updateSource = stock.update.map(su => Json.toJson(su))
     val stockSource = historySource.concat(updateSource)
 
