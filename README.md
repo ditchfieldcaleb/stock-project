@@ -31,6 +31,10 @@ Test files/classes are located in `/test/controllers/`
 
 The main test file is `FunctionalSpec.scala`
 
+There are currently 10 tests, 2 which came default to the websocket starter example.
+
+There are 7 tests left to impelement as of this commit.
+
 ## Some Details
 
 Stock prices are fetched from <https://iexcloud.io>. I've created an account, so the api key located in `/app/stocks/Stock.scala is my own.` You should replace this API key with yours.
