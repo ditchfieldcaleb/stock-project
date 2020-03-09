@@ -81,7 +81,7 @@ class FunctionalSpec extends PlaySpec with ScalaFutures {
           val input: String = queue.take()
           val json:JsValue = Json.parse(input)
           val symbol = (json \ "symbol").as[String]
-          List(symbol) must contain oneOf("AAPL", "GOOG", "ORCL")
+          List(symbol) must contain oneOf("MSFT", "GOOG", "AAPL")
         }
       }
     }
