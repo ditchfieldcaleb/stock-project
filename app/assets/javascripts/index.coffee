@@ -38,6 +38,9 @@ getChartOptions = (data) ->
   yaxis:
     min: getAxisMin(data)
     max: getAxisMax(data)
+    ticks: 10
+    tickFormatter: (v) ->
+      "$" + v
   xaxis:
     ticks: 5
     tickFormatter: (i) ->
