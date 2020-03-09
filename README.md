@@ -10,6 +10,8 @@ I started with the following websockets example from the play-framework samples 
 
 The above linked example has the ability to only add stocks, and the values are generated, not real.
 
+My project here has the ability to add and remove stocks, and the prices are fetched from an API.
+
 ## How to Build/Run
 
 First, make sure that you have the following installed:
@@ -20,3 +22,11 @@ After cloning this project into a directory, run the following command to build 
 `sbt run`
 
 After a few seconds, navigate to <http://localhost:9000>
+
+## Some Details
+
+Stock prices are fetched from <https://iexcloud.com>. I've created an account, so the api key located in `/app/stocks/Stock.scala is my own.` You should replace this API key with yours.
+
+## Final Notes
+
+This was my first time using Scala, and also my first time using a functional programming language. Scala is fairly different from most programming languages I know, and was more challenging than I expected to get up and running with. The MVC layout of the Play framework, however, is pretty familiar (from my time working with Node) and I was able to navigate/edit/add to the existing tutorial project without too much effort.
