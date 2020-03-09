@@ -25,7 +25,7 @@ After a few seconds, navigate to <http://localhost:9000>
 
 ## Some Details
 
-Stock prices are fetched from <https://iexcloud.com>. I've created an account, so the api key located in `/app/stocks/Stock.scala is my own.` You should replace this API key with yours.
+Stock prices are fetched from <https://iexcloud.io>. I've created an account, so the api key located in `/app/stocks/Stock.scala is my own.` You should replace this API key with yours.
 
 ## Final Notes
 
