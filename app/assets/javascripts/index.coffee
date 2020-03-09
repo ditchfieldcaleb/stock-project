@@ -17,6 +17,15 @@ $ ->
     # reset the form
     $("#addsymboltext").val("")
 
+  $("#removesymbolform").submit (event) ->
+    event.preventDefault()
+    # send the message to remove the stock
+    ws.send(JSON.stringify({kill: 'true', symbol: $("#removesymboltext").val()}))
+    # remove the chart
+    removeChart($("#removesymboltext").val())
+    # reset the form
+    $("#removesymboltext").val("")
+
 getPricesFromArray = (data) ->
   (v[1] for v in data)
 
@@ -37,6 +46,9 @@ getAxisMin = (data) ->
 
 getAxisMax = (data) ->
   Math.max.apply(Math, data) * 1.1
+
+removeChart = (chartID) ->
+	$("#"+chartID).parent().parent().parent().remove()
 
 populateStockHistory = (message) ->
   chart = $("<div>").addClass("chart").prop("id", message.symbol)

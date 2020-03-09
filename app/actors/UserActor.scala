@@ -43,8 +43,19 @@ class UserActor @Inject()(id: String, stocksActor: ActorRef[GetStocks])(implicit
 
   private val jsonSink: Sink[JsValue, Future[Done]] = Sink.foreach { json =>
     // When the user types in a stock in the upper right corner, this is triggered,
+    val killsymbol = (json \ "kill")
     val symbol = (json \ "symbol").as[StockSymbol]
-    addStocks(Set(symbol))
+
+    println(killsymbol)
+    println(symbol)
+
+    if (! killsymbol.isDefined) {
+      println("it's not defined!")
+      addStocks(Set(symbol))
+    } else {
+      println("it's defined")
+      unwatchStocks(Set(symbol))
+    }
   }
 
   def behavior: Behavior[Message] = {

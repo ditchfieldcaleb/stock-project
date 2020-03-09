@@ -84,11 +84,11 @@ class RealStockQuoteGenerator(symbol: StockSymbol) extends StockQuoteGenerator {
     val base_url = "https://cloud.iexapis.com/stable/stock/"
     val call_url = base_url + symbolString + "/quote?token=" + api_key
 
-    println(call_url)
+    //println(call_url)
     val json = ujson.read(Http(call_url).asString.body)
-    println(json)
+    //println(json)
     val result = json("latestPrice").toString().toDouble
-    println(result)
+    //println(result)
 
     return result
   }
