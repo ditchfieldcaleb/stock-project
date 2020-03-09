@@ -133,5 +133,33 @@ class FunctionalSpec extends PlaySpec with ScalaFutures {
         }
       }
     }
+
+    "push out both the default and an added stock" in WsTestClient.withClient { client =>
+      println("not yet implemented!")
+    }
+
+    "push out nothing when we remove the default stock" in WsTestClient.withClient { client =>
+      println("not yet implemented!")
+    }
+
+    "not push out duplicate vlaues when we add the default stock" in WsTestClient.withClient { client =>
+      println("not yet implemented!")
+    }
+
+    "push out 10 values if we add a lot of stocks" in WsTestClient.withClient { client =>
+      println("not yet implemented!")
+    }
+
+    "push out the right values if we add 10 stocks and remove 5 of them" in WsTestClient.withClient { client =>
+      println("not yet implemented!")
+    }
+
+    "not crash if we try to remove a nonexistant stock" in WsTestClient.withClient { client =>
+      println("not yet implemented!")
+    }
+
+    "eventually populate all the values with historical data for the default stock" in WsTestClient.withClient { client =>
+      println("not yet implemented!")
+    }
   }
 }
