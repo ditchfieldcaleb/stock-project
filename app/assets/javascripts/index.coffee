@@ -39,7 +39,10 @@ getChartOptions = (data) ->
     min: getAxisMin(data)
     max: getAxisMax(data)
   xaxis:
-    show: false
+    ticks: 5
+    tickFormatter: (i) ->
+      new Date((Date.now() - ((50-i)*5000))).toUTCString()
+    show:true
 
 getAxisMin = (data) ->
   Math.min.apply(Math, data) * 0.9
@@ -53,7 +56,7 @@ removeChart = (chartID) ->
 populateStockHistory = (message) ->
   chart = $("<div>").addClass("chart").prop("id", message.symbol)
   chartHolder = $("<div>").addClass("chart-holder").append(chart)
-  chartHolder.append($("<p>").text("values are simulated"))
+  chartHolder.append($("<p>").text("values are real!"))
   detailsHolder = $("<div>").addClass("details-holder")
   flipper = $("<div>").addClass("flipper").append(chartHolder).append(detailsHolder).attr("data-content", message.symbol)
   flipContainer = $("<div>").addClass("flip-container").append(flipper).click (event) ->
@@ -76,6 +79,7 @@ updateStockChart = (message) ->
       yaxes.max = getAxisMax(data)
       plot.setupGrid()
     # redraw the chart
+    plot.setupGrid()
     plot.draw()
 
 handleFlip = (container) ->

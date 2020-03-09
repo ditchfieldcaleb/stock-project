@@ -48,7 +48,7 @@ class Stock(val symbol: StockSymbol) {
    */
   def update: Source[StockUpdate, NotUsed] = {
     source
-      .throttle(elements = 1, per = 1000.millis, maximumBurst = 1, ThrottleMode.shaping)
+      .throttle(elements = 1, per = 5000.millis, maximumBurst = 1, ThrottleMode.shaping)
       .map(sq => new StockUpdate(sq.symbol, sq.price))
   }
 
