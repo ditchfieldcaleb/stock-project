@@ -1,0 +1,5 @@
+[0m[[0m[31merror[0m] [0m[0m/home/caleb/stock-project/conf/routes:16:1: type StocksController is not a member of package controllers[0m
+[0m[[0m[31merror[0m] [0m[0mGET			/stocks											controllers.StocksController.index[0m
+[0m[[0m[31merror[0m] [0m[0m/home/caleb/stock-project/conf/routes:16:1: type StocksController is not a member of package controllers[0m
+[0m[[0m[31merror[0m] [0m[0mGET			/stocks											controllers.StocksController.index[0m
+[0m[[0m[31merror[0m] [0m[0mtwo errors found[0m

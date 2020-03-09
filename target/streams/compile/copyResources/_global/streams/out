@@ -1,4 +1,4 @@
 [0m[[0m[0mdebug[0m] [0m[0mCopy resource mappings: [0m
-[0m[[0m[0mdebug[0m] [0m[0m	(/home/caleb/play-samples/play-scala-starter-example/conf/application.conf,/home/caleb/play-samples/play-scala-starter-example/target/scala-2.13/classes/application.conf)[0m
-[0m[[0m[0mdebug[0m] [0m[0m	(/home/caleb/play-samples/play-scala-starter-example/conf/logback.xml,/home/caleb/play-samples/play-scala-starter-example/target/scala-2.13/classes/logback.xml)[0m
-[0m[[0m[0mdebug[0m] [0m[0m	(/home/caleb/play-samples/play-scala-starter-example/conf/routes,/home/caleb/play-samples/play-scala-starter-example/target/scala-2.13/classes/routes)[0m
+[0m[[0m[0mdebug[0m] [0m[0m	(/home/caleb/stock-project/conf/application.conf,/home/caleb/stock-project/target/scala-2.13/classes/application.conf)[0m
+[0m[[0m[0mdebug[0m] [0m[0m	(/home/caleb/stock-project/conf/logback.xml,/home/caleb/stock-project/target/scala-2.13/classes/logback.xml)[0m
+[0m[[0m[0mdebug[0m] [0m[0m	(/home/caleb/stock-project/conf/routes,/home/caleb/stock-project/target/scala-2.13/classes/routes)[0m

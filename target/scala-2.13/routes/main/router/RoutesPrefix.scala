@@ -1,6 +1,6 @@
 // @GENERATOR:play-routes-compiler
 // @SOURCE:/home/caleb/stock-project/conf/routes
-// @DATE:Mon Mar 09 00:10:08 EDT 2020
+// @DATE:Mon Mar 09 00:25:02 EDT 2020
 
 
 package router {
