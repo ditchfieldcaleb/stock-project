@@ -21,6 +21,7 @@ class FunctionalSpec extends PlaySpec with ScalaFutures {
 
   "HomeController" should {
 
+    // This test was provided by the websocket-sample example
     "reject a websocket flow if the origin is set incorrectly" in WsTestClient.withClient { client =>
 
       // Pick a non standard port that will fail the (somewhat contrived) origin check...
@@ -54,6 +55,7 @@ class FunctionalSpec extends PlaySpec with ScalaFutures {
       }
     }
 
+    // This test was also provided by the websocket-sample example
     "accept a websocket flow if the origin is set correctly" in WsTestClient.withClient { client =>
       lazy val port: Int = Helpers.testServerPort
       val app = new GuiceApplicationBuilder().build()
@@ -85,6 +87,51 @@ class FunctionalSpec extends PlaySpec with ScalaFutures {
         }
       }
     }
-  }
 
+    "push out price values for the default stock" in WsTestClient.withClient { client =>
+      lazy val port: Int = Helpers.testServerPort
+      val app = new GuiceApplicationBuilder().build()
+      Helpers.running(TestServer(port, app)) {
+        val myPublicAddress = s"localhost:$port"
+        val serverURL = s"ws://$myPublicAddress/ws"
+
+        val asyncHttpClient: AsyncHttpClient = client.underlying[AsyncHttpClient]
+        val webSocketClient = new WebSocketClient(asyncHttpClient)
+        val queue = new ArrayBlockingQueue[String](10)
+        val origin = serverURL
+        val consumer: Consumer[String] = new Consumer[String] {
+          override def accept(message: String): Unit = queue.put(message)
+        }
+        val listener = new WebSocketClient.LoggingListener(consumer)
+        val completionStage = webSocketClient.call(serverURL, origin, listener)
+        val f = FutureConverters.toScala(completionStage)
+
+        // Test we can get good output from the websocket
+        whenReady(f, timeout = Timeout(1.second)) { webSocket =>
+          val condition: Callable[java.lang.Boolean] = new Callable[java.lang.Boolean] {
+            override def call(): java.lang.Boolean = webSocket.isOpen && queue.peek() != null
+          }
+          await().until(condition)
+          val input: String = queue.take()
+          val json:JsValue = Json.parse(input)
+          val symbol = (json \ "symbol").as[String]
+
+          val historyList = json("history").as[List[Double]]
+
+          // The first message we get - all historical values should be zero.
+          historyList.forall(_ == historyList.head) mustBe true
+
+          // The second message we get should have exactly one nonzero value.
+          // It's a stock update
+          await().until(condition)
+          val input2: String = queue.take()
+          val json2:JsValue = Json.parse(input2)
+
+          assert(json2("symbol").as[String] == "MSFT")
+          assert(json2("type").as[String] == "stockupdate")
+          assert(json2("price").as[Double] > 0)
+        }
+      }
+    }
+  }
 }

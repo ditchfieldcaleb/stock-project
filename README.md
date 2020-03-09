@@ -23,6 +23,14 @@ After cloning this project into a directory, run the following command to build 
 
 After a few seconds, navigate to <http://localhost:9000>
 
+## Running Tests
+
+To run all tests, execute the command `sbt test`
+
+Test files/classes are located in `/test/controllers/`
+
+The main test file is `FunctionalSpec.scala`
+
 ## Some Details
 
 Stock prices are fetched from <https://iexcloud.io>. I've created an account, so the api key located in `/app/stocks/Stock.scala is my own.` You should replace this API key with yours.
